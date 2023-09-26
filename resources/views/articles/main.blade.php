@@ -7,18 +7,18 @@
       <th scope="col">Name</th>
       <th scope="col">ShortDesc</th>
       <th scope="col">Desc</th>
-      <th scope="col">Image</th>
     </tr>
   </thead>
   <tbody>
   @foreach($articles as $article)
     <tr>
       <th scope="row">{{$article->date}}</th>
-      <td><a href="/article/show/{{$article->id}}"></a> {{$article->name}}</td>
-      <td>{{$article->shortDesc}}</td>
+      <td><a href="/article/{{$article->id}}"> {{$article->name}} </a></td>
+      <td>{{$article->short_desc}}</td>
       <td>{{$article->desc}}</td>
     </tr>
   @endforeach
   </tbody>
 </table>
+{{$articles->links()}}
 @endsection

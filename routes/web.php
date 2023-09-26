@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ArticleController;
+
 
 
 /*
@@ -16,21 +18,25 @@ use App\Http\Controllers\AuthController;
 |
 */
 
+//Article
+Route::get('/', function() {
+    return redirect('/article');
+});
+
+Route::resource('article', ArticleController::class);
+
 //Auth
 Route::get('/create', [AuthController::class, 'create']);
 Route::post('/registr', [AuthController::class, 'registr']);
 
 
 
-Route::get('/', [MainController::class, 'index']);
 
 Route::get('/galery/{img}', function($img){
     return view('main.galery', ['img'=>$img]);
 });
 
-Route::get('/home', function () {
-    return view('main.main');
-});
+Route::get('/home', [MainController::class, 'index']);
 
 
 
