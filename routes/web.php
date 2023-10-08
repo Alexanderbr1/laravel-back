@@ -4,8 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ArticleController;
-
-
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,13 +16,20 @@ use App\Http\Controllers\ArticleController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 //Article
 Route::get('/', function() {
     return redirect('/article');
 });
-
 Route::resource('article', ArticleController::class);
+
+//Comments
+Route::group(['prefix'=>'/comment'], function() {
+    Route::post('/store', [CommentController::class, 'store']);
+    Route::get('/edit/{id}', [CommentController::class, 'edit']);
+    Route::post('/update/{id}', [CommentController::class, 'update']);
+    Route::get('/delete/{id}', [CommentController::class, 'delete']);
+});
+
 
 //Auth
 Route::get('/create', [AuthController::class, 'create']);
@@ -37,14 +43,11 @@ Route::get('/galery/{img}', function($img){
 });
 
 Route::get('/home', [MainController::class, 'index']);
-
-
-
-Route::get('/contact', function() {
+Route::get('/contact', function(){
     $contacts = [
-        'name' => 'Polytech',
-        'address' => 'B.Semenovkaya, 38',
-        'phone' => '8(495)432-3232'
+        'name'=>'Polytech',
+        'address'=>'B.Semenovskay 38',
+        'phone'=>'8(495)432-3232'
     ];
-    return view('main.contact', ['contacts' => $contacts]);
+    return view('main.contact', ['contacts'=>$contacts]);
 });

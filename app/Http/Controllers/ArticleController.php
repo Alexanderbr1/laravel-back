@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -40,7 +41,6 @@ class ArticleController extends Controller
             'title'=>'required',
             'shortDesc'=>'required|min:5'
         ]);
-
         $article = new Article;
         $article->date = $request->date;
         $article->name = $request->title;
@@ -49,9 +49,6 @@ class ArticleController extends Controller
         $article->author_id = 1;
         $article->save();
         return redirect('/article');
-
-
-
     }
 
     /**
@@ -62,7 +59,8 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        return view('articles.show', ['article' => $article]);
+        $comments = Comment::where('article_id', $article->id)->latest()->paginate(2);
+        return view('articles.show', ['article' => $article, 'comments'=>$comments]);
     }
 
     /**
@@ -107,6 +105,7 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
+        Comment::where('article_id', $article->id)->delete();
         $article->delete();
         return redirect('/');
     }
