@@ -32,9 +32,9 @@ Route::group(['prefix'=>'/comment', 'middleware' => 'auth:sanctum'], function() 
 
 
 //Auth
-Route::get('/create', [AuthController::class, 'create']);
-Route::post('/registr', [AuthController::class, 'registr']);
-Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/create', [AuthController::class, 'create'])->middleware('guest');
+Route::post('/registr', [AuthController::class, 'registr'])->middleware('guest');   
+Route::get('/login', [AuthController::class, 'login'])->name('login')->middleware('guest');
 Route::post('/login', [AuthController::class, 'customLogin']);
 Route::get('/logout', [AuthController::class, 'logout']);
 
