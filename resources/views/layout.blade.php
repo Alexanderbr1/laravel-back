@@ -53,9 +53,15 @@
             </div>
           </li> -->
         </ul>
-        <form class="form-inline my-2 my-lg-0" action="/create" method="get">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign in</button>
-        </form>
+        <div class="form-inline my-2 my-lg-0">
+        @guest
+          <a href="/create" class="btn btn-outline-success mr-3 my-2 my-sm-0">Registration</a>
+          <a href="/login" class="btn btn-outline-success my-2 my-sm-0">Login</a>
+        @endguest
+        @auth
+          <a href="/logout" class="btn btn-outline-success my-2 my-sm-0">Sign Out</a>
+        @endauth
+        </div>
       </div>
     </nav>
     </header>

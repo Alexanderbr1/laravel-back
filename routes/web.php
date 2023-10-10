@@ -20,10 +20,10 @@ use App\Http\Controllers\CommentController;
 Route::get('/', function() {
     return redirect('/article');
 });
-Route::resource('article', ArticleController::class);
+Route::resource('article', ArticleController::class)->middleware('auth:sanctum');
 
 //Comments
-Route::group(['prefix'=>'/comment'], function() {
+Route::group(['prefix'=>'/comment', 'middleware' => 'auth:sanctum'], function() {
     Route::post('/store', [CommentController::class, 'store']);
     Route::get('/edit/{id}', [CommentController::class, 'edit']);
     Route::post('/update/{id}', [CommentController::class, 'update']);
