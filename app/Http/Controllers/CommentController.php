@@ -7,7 +7,13 @@ use App\Models\Comment;
 use Illuminate\Support\Facades\Gate;
 
 class CommentController extends Controller
-{
+{   
+
+    public function index() {
+        $comments = Comment::latest()->paginate(10);
+        return view('comments.mode', ['comments' => $comments]);
+    }
+
     public function store(Request $request){
         $request->validate([
             'title' => 'required',
