@@ -5,6 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
+use App\Mail\AdminComment;
+use App\Models\Article;
+use App\Models\User;
+use App\Notifications\CommentNotifi;
 
 class CommentController extends Controller
 {   
@@ -34,13 +41,19 @@ class CommentController extends Controller
             'text' => 'required',
             'article_id' => 'required'
         ]);
-
+        $article = Article::findOrFail($request->article_id);
         $comment = new Comment;
         $comment->title = $request->title;
         $comment->text = $request->text;
         $comment->article_id = $request->article_id;
         $comment->user()->associate(auth()->user());
         $res = $comment->save();
+        $users = User::where('id', '!=', auth()->id())->get();
+        Log::alert($users);
+        if($res) {
+            Mail::to('bryantsevgpt@gmail.com')->send(new AdminComment($comment, $article->name));
+            Notification::send($users, new CommentNotifi($comment));
+        }
         return redirect()->route('article.show', ['article'=>$comment->article_id, 'res'=>$res]);
     }
 

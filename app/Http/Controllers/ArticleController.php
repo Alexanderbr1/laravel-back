@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ArticleMail;    
 use App\Jobs\MailJob;
+use App\Events\ArticleCreateEvent;
 
 
 class ArticleController extends Controller
@@ -55,6 +56,7 @@ class ArticleController extends Controller
         $article->author_id = 1;
         $article->save();
         MailJob::dispatch($article);
+        ArticleCreateEvent::dispatch($article);
         return redirect('/article');
     }
 
