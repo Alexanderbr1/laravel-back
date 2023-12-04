@@ -17,9 +17,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // Article::factory(10)->has(Comment::factory(3))->create();
+        // \App\Models\User::factory(10)->create();
+        Article::factory(10)->has(Comment::factory(3))->create();
         $this->call([
-            // ArticleSeeder::class,
+            ArticleSeeder::class,
             RoleSeeder::class,
         ]);
     }

@@ -38,6 +38,6 @@ class ArticleCreateEvent implements ShouldBroadcast
     }
 
     public function broadcastWith(){
-        return ['name' => $this->article->name];
+        return ['name' => $this->article];
     }
 }

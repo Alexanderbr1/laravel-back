@@ -24,7 +24,12 @@ class CommentController extends Controller
     public function accept(int $id){ 
         $comment = Comment::findOrFail($id);
         $comment->accept = true;
-        $comment->save();
+        $res = $comment->save();
+        $article = Article::where('id', $comment->article_id)->first();
+        if($res) {
+            $users = User::where('id', '!=', auth()->id())->get();
+            Notification::send($users, new CommentNotifi($article));
+        }
         return redirect('/comment');
     }
 
@@ -50,10 +55,6 @@ class CommentController extends Controller
         $res = $comment->save();
         $users = User::where('id', '!=', auth()->id())->get();
         Log::alert($users);
-        if($res) {
-            Mail::to('bryantsevgpt@gmail.com')->send(new AdminComment($comment, $article->name));
-            Notification::send($users, new CommentNotifi($comment));
-        }
         return redirect()->route('article.show', ['article'=>$comment->article_id, 'res'=>$res]);
     }
 
